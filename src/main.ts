@@ -1,17 +1,18 @@
 import "./assets/main.css"
 
 import { createApp } from "vue"
+import { createPinia } from "pinia";
 import App from "./App.vue"
 import router from "./router"
 import LoadingPage from "@/components/LoadingPage.vue"
 
 const app = createApp(App)
+const pinia = createPinia();
 
 app.component("LoadingPage", LoadingPage);
 
 app.config.globalProperties.$filters = {
   currency(value: number) {
-    console.log(value)
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -19,6 +20,7 @@ app.config.globalProperties.$filters = {
   }
 };
 
+app.use(pinia);
 app.use(router)
 
 app.mount("#app")

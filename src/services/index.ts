@@ -5,3 +5,7 @@ const axiosInstance = axios.create({
 });
 
 export const api = axiosInstance;
+
+export function getCep(cep: string) {
+  return axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+}

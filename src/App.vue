@@ -6,7 +6,9 @@ import TheFooter from "@/components/TheFooter.vue"
 <template>
   <TheHeader />
   <main id="main">
-    <router-view />
+    <transition mode="out-in">
+      <router-view />
+    </transition>
   </main>
   <TheFooter />
 </template>
