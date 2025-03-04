@@ -9,32 +9,32 @@
 </template>
 
 <script lang="ts">
-import UserForm from "@/components/UserForm.vue";
-import { useGlobalStore } from "@/store";
+import UserForm from "@/components/UserForm.vue"
+import { useGlobalStore } from "@/store"
 
 export default {
   name: "createLogin",
   components: {
-    UserForm
+    UserForm,
   },
   data() {
     return {
-      criar: false
+      criar: false,
     }
   },
   methods: {
     async submitCreateUser() {
       try {
-        const context = useGlobalStore();
-        await context.createUser(context.user);
-        await context.fetchUser(context.user.email, context.user.senha);
-        this.$router.push("/usuario");
+        const context = useGlobalStore()
+        await context.createUser(context.user)
+        await context.fetchUser()
+        this.$router.push("/usuario")
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    }
+    },
   },
-};
+}
 </script>
 
 <style scoped>

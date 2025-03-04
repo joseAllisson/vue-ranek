@@ -15,21 +15,21 @@
       <div v-else-if="products && products.length === 0" key="notFound">
         <p class="not-found">Busca sem resultados. Tente buscar outro termo.</p>
       </div>
-      <LoadingPage v-else key="loading"/>
+      <LoadingPage v-else key="loading" />
     </transition>
   </section>
 </template>
 <script lang="ts">
 import { api } from "@/services"
 import { serialize } from "@/helpers/serialize.ts"
-import type { Produto } from "@/interfaces/Produto";
+import type { Produto } from "@/interfaces/Produto"
 import PaginateProducts from "@/components/PaginateProducts.vue"
-import { formattedPrice } from "@/helpers/formattedPrice";
+import { formattedPrice } from "@/helpers/formattedPrice"
 
 export default {
   name: "ListProducts",
   components: {
-    PaginateProducts
+    PaginateProducts,
   },
   data() {
     return {
@@ -40,19 +40,19 @@ export default {
   },
   computed: {
     url() {
-      const query = serialize(this.$route.query);
+      const query = serialize(this.$route.query)
 
-      return `/produto?_limit=${this.perPage}${query}`;
-    }
+      return `/produto?_limit=${this.perPage}${query}`
+    },
   },
   methods: {
     formattedPrice(value: string) {
-      return formattedPrice(value);
+      return formattedPrice(value)
     },
     async getProducts() {
       try {
         api.get(this.url).then((response) => {
-          this.total = Number(response.headers["x-total-count"]);
+          this.total = Number(response.headers["x-total-count"])
           this.products = response.data
         })
       } catch (error) {

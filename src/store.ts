@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { api } from "@/services";
-import type { Produto } from "./interfaces/Produto";
-import type { User } from "./interfaces/User";
+import { defineStore } from "pinia"
+import { api } from "@/services"
+import type { Produto } from "./interfaces/Produto"
+import type { User } from "./interfaces/User"
 
 export const useGlobalStore = defineStore("global", {
   state: () => ({
@@ -16,7 +16,7 @@ export const useGlobalStore = defineStore("global", {
       numero: "",
       bairro: "",
       cidade: "",
-      estado: ""
+      estado: "",
     },
     userProducts: null as Produto[] | null, // Para armazenar os produtos do usuário
   }),
@@ -24,67 +24,66 @@ export const useGlobalStore = defineStore("global", {
   actions: {
     // Atualiza status de login
     updateLogin(value: boolean) {
-      this.isLoggedIn = value;
+      this.isLoggedIn = value
     },
 
     // Atualiza os dados do usuário
     updateUser(data: Partial<typeof this.user>) {
-      this.user = { ...this.user, ...data };
+      this.user = { ...this.user, ...data }
     },
 
     // Atualiza os produtos do usuário
     updateUserProducts(products: Produto[]) {
-      this.userProducts = products;
+      this.userProducts = products
     },
 
     // Adiciona um novo produto no início da lista
     addUserProduct(product: Produto) {
       if (this.userProducts) {
-        this.userProducts.unshift(product);
+        this.userProducts.unshift(product)
       } else {
-        this.userProducts = [product];
+        this.userProducts = [product]
       }
     },
 
     // Busca os produtos do usuário
     async fetchUserProducts() {
       try {
-        const response = await api.get(`/produto?usuario_id=${this.user.id}`);
-        this.updateUserProducts(response.data);
+        const response = await api.get(`/produto?usuario_id=${this.user.id}`)
+        this.updateUserProducts(response.data)
       } catch (error) {
-        console.error("Error fetching user products:", error);
+        console.error("Error fetching user products:", error)
       }
     },
 
     // Busca os dados do usuário
-    async fetchUser(email: string, password: string) {
+    async fetchUser() {
       try {
-        const response = await api.post("/usuario",
-          { username: email, password: password }
-        );
-        this.updateUser(response.data);
-        this.updateLogin(true);
+        const response = await api.get("/usuario")
+        this.updateUser(response.data)
+        console.log("User fetched aqui:", response.data)
+        this.updateLogin(true)
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error("Error fetching user:", error)
       }
     },
 
     // Criação de usuário
     async createUser(payload: User) {
-      this.updateUser({ id: payload.email });
-      return api.post("/usuario", payload);
+      this.updateUser({ id: payload.email })
+      return api.post("/usuario", payload)
     },
 
     // Login do usuário
-    async loginUser(credentials: { email: string; password: string }) {
+    async loginUser(email: string, password: string) {
       try {
-        const response = await api.post("/usuario", {
-          username: credentials.email,
-          password: credentials.password,
-        });
-        window.localStorage.token = `Bearer ${response.data.token}`;
+        const response = await api.login({
+          username: email,
+          password: password,
+        })
+        window.localStorage.token = `${response.data.token}`
       } catch (error) {
-        console.error("Error logging in:", error);
+        console.error("Error logging in:", error)
       }
     },
 
@@ -100,10 +99,10 @@ export const useGlobalStore = defineStore("global", {
         numero: "",
         bairro: "",
         cidade: "",
-        estado: ""
-      });
-      window.localStorage.removeItem("token");
-      this.updateLogin(false);
+        estado: "",
+      })
+      window.localStorage.removeItem("token")
+      this.updateLogin(false)
     },
   },
-});
+})

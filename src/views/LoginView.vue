@@ -3,10 +3,10 @@
     <h1>Login</h1>
     <form>
       <label for="email">Email</label>
-      <input type="email" name="email" id="email" v-model="login.email">
+      <input type="email" name="email" id="email" v-model="login.email" />
 
       <label for="password">Senha</label>
-      <input type="password" name="password" id="password" v-model="login.senha">
+      <input type="password" name="password" id="password" v-model="login.password" />
 
       <button class="btn" @click.prevent="submit">Logar</button>
     </form>
@@ -18,29 +18,31 @@
 </template>
 
 <script lang="ts">
-import createLogin from "@/components/createLogin.vue";
-import { useGlobalStore } from "@/store";
+import createLogin from "@/components/createLogin.vue"
+import { useGlobalStore } from "@/store"
 
 export default {
   components: {
-    LoginCriar: createLogin
+    LoginCriar: createLogin,
   },
   name: "LoginView",
   data() {
     return {
       login: {
         email: "",
-        senha: ""
-      }
+        password: "",
+      },
     }
   },
   methods: {
-    submit() {
-      useGlobalStore().fetchUser(this.login.email, this.login.senha);
-      this.$router.push("/usuario");
-    }
-  }
-};
+    async submit() {
+      const context = useGlobalStore()
+      await context.loginUser(this.login.email, this.login.password)
+      await context.fetchUser()
+      this.$router.push("/usuario")
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -78,4 +80,3 @@ form {
   text-decoration: underline;
 }
 </style>
-
