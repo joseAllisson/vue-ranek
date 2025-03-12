@@ -10,7 +10,10 @@
         <h1>{{ product.nome }}</h1>
         <p class="price">{{ formattedPrice }}</p>
         <p class="description">{{ product.descricao }}</p>
-        <button class="btn" v-if="product.vendido === 'false'">Comprar</button>
+        <transaction mode="out-in" v-if="product.vendido === 'false'">
+          <button class="btn" v-if="!finish" @click="finish = true">Comprar</button>
+          <FinishBuy v-else :product="product" />
+        </transaction>
         <button v-else class="btn" disabled>product Vendido</button>
       </div>
     </div>
@@ -19,33 +22,38 @@
 </template>
 
 <script lang="ts">
-import type { Produto } from "@/interfaces/Produto";
-import { formattedPrice } from "@/helpers/formattedPrice";
-import { api } from "@/services";
+import type { Produto } from "@/interfaces/Produto"
+import { formattedPrice } from "@/helpers/formattedPrice"
+import { api } from "@/services"
+import FinishBuy from "@/components/FinishBuy.vue"
 
 export default {
   name: "ProductView",
   props: ["id"],
+  components: {
+    FinishBuy,
+  },
   data() {
     return {
-      product: null as Produto | null
-    };
+      product: null as Produto | null,
+      finish: false,
+    }
   },
   computed: {
     formattedPrice() {
-      return this.product ? formattedPrice(this.product.preco) : "";
-    }
+      return this.product ? formattedPrice(this.product.preco) : ""
+    },
   },
   methods: {
     getProduct() {
-      api.get(`/produto/${this.id}`).then(response => {
-        this.product = response.data;
-      });
-    }
+      api.get(`/produto/${this.id}`).then((response) => {
+        this.product = response.data
+      })
+    },
   },
   created() {
-    this.getProduct();
-  }
+    this.getProduct()
+  },
 }
 </script>
 

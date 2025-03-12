@@ -24,7 +24,7 @@ export const api = {
   delete: (endpoint: string) => axiosInstance.delete(endpoint),
   login: (body: { username: string; password: string }) =>
     axios.post(`${url}/jwt-auth/v1/token`, body),
-  validateToken: () => axiosInstance.post("/jwt-auth/v1/token/validate"),
+  validateToken: () => axiosInstance.post(url + "/jwt-auth/v1/token/validate"),
 }
 
 export const getCep = (cep: string) => axios.get(`https://viacep.com.br/ws/${cep}/json/`)

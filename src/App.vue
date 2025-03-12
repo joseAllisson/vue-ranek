@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import TheHeader from "@/components/TheHeader.vue"
-import TheFooter from "@/components/TheFooter.vue"
-</script>
-
 <template>
   <TheHeader />
   <main id="main">
@@ -12,6 +7,33 @@ import TheFooter from "@/components/TheFooter.vue"
   </main>
   <TheFooter />
 </template>
+
+<script lang="ts">
+import TheHeader from "@/components/TheHeader.vue"
+import TheFooter from "@/components/TheFooter.vue"
+import { api } from "./services"
+import { useGlobalStore } from "./store"
+
+export default {
+  components: {
+    TheHeader,
+    TheFooter,
+  },
+  created() {
+    const context = useGlobalStore()
+    if (window.localStorage.getItem("token")) {
+      api
+        .validateToken()
+        .then(() => {
+          context.fetchUser()
+        })
+        .catch(() => {
+          context.logoutUser()
+        })
+    }
+  },
+}
+</script>
 
 <style>
 * {
@@ -68,6 +90,11 @@ img {
   transform: scale(1.1);
 }
 
+.btn:hover {
+  background: #65d;
+  transform: scale(1.1);
+}
+
 #app {
   display: flex;
   min-height: 100vh;
@@ -101,19 +128,19 @@ textarea:focus {
 
 .v-enter,
 .v-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 .v-enter {
-    transform: translate3d(0, -20px, 0);
+  transform: translate3d(0, -20px, 0);
 }
 
 .v-leave-to {
-    transform: translate3d(0, 20px, 0);
+  transform: translate3d(0, 20px, 0);
 }
 
 .v-enter-active,
 .v-leave-active {
-    transition: all 0.3s;
+  transition: all 0.3s;
 }
 </style>

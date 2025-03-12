@@ -1,19 +1,19 @@
 <template>
-  <form class="adicionar-produto" @submit.prevent="adicionarProduto">
+  <form class="add-product" @submit.prevent="addProduct">
     <label for="nome">Nome</label>
-    <input id="nome" name="nome" type="text" v-model="produto.nome" required />
+    <input id="nome" name="nome" type="text" v-model="product.nome" required />
 
     <label for="preco">Preço (R$)</label>
-    <input id="preco" name="preco" type="number" v-model="produto.preco" required />
+    <input id="preco" name="preco" type="number" v-model="product.preco" required />
 
     <label for="fotos">Fotos</label>
-    <input id="fotos" name="fotos" type="file" multiple ref="fotos" />
+    <input id="fotos" name="fotos" type="file" multiple ref="photos" />
 
     <label for="descricao">Descrição</label>
-    <textarea id="descricao" name="descricao" v-model="produto.descricao"></textarea>
+    <textarea id="descricao" name="descricao" v-model="product.descricao"></textarea>
 
-    <button class="btn" type="submit" :disabled="adicionando">
-      {{ adicionando ? "Adicionando..." : "Adicionar Produto" }}
+    <button class="btn" type="submit" :disabled="added">
+      {{ added ? "Adicionando..." : "Adicionar Produto" }}
     </button>
   </form>
 </template>
@@ -28,7 +28,7 @@ export default defineComponent({
     const context = useGlobalStore()
 
     // Produto inicial
-    const produto = ref({
+    const product = ref({
       nome: "",
       preco: "",
       descricao: "",
@@ -36,59 +36,59 @@ export default defineComponent({
     })
 
     // Referência para input de arquivo
-    const fotos = ref<HTMLInputElement | null>(null)
+    const photos = ref<HTMLInputElement | null>(null)
 
     // Estado de carregamento
-    const adicionando = ref(false)
+    const added = ref(false)
 
-    // Formatar produto para enviar
-    const formatarProduto = () => {
+    // Formatar product para enviar
+    const formatProduct = () => {
       const form = new FormData()
 
-      if (fotos.value?.files) {
-        Array.from(fotos.value.files).forEach((file) => {
+      if (photos.value?.files) {
+        Array.from(photos.value.files).forEach((file) => {
           form.append("fotos", file)
         })
       }
 
-      form.append("nome", produto.value.nome)
-      form.append("preco", produto.value.preco)
-      form.append("descricao", produto.value.descricao)
-      form.append("vendido", produto.value.vendido)
+      form.append("nome", product.value.nome)
+      form.append("preco", product.value.preco)
+      form.append("descricao", product.value.descricao)
+      form.append("vendido", product.value.vendido)
       form.append("usuario_id", context.user.id)
 
       return form
     }
 
-    // Adicionar produto
-    const adicionarProduto = async () => {
+    // Adicionar product
+    const addProduct = async () => {
       try {
-        adicionando.value = true
-        const produtoFormatado = formatarProduto()
+        added.value = true
+        const productFormated = formatProduct()
 
-        await api.post("/produto", produtoFormatado)
+        await api.post("/produto", productFormated)
         await context.fetchUserProducts()
 
         // Limpa o formulário após adicionar
-        produto.value = { nome: "", preco: "", descricao: "", vendido: "false" }
-        if (fotos.value) fotos.value.value = ""
+        product.value = { nome: "", preco: "", descricao: "", vendido: "false" }
+        if (photos.value) photos.value.value = ""
       } finally {
-        adicionando.value = false
+        added.value = false
       }
     }
 
     return {
-      produto,
-      fotos,
-      adicionando,
-      adicionarProduto,
+      product,
+      photos,
+      added,
+      addProduct,
     }
   },
 })
 </script>
 
 <style scoped>
-.adicionar-produto {
+.add-product {
   display: grid;
   grid-template-columns: 100px 1fr;
   align-items: center;

@@ -1,8 +1,10 @@
 <template>
   <section>
     <h2>Crie a Sua Conta</h2>
-    <button v-if="!criar" class="btn" @click="criar = true">Criar Conta</button>
+
+    <button v-if="!created" class="btn" @click="created = true">Criar Conta</button>
     <UserForm v-else>
+      <ErrorNotification :errors="errors" />
       <button class="btn btn-form" @click.prevent="submitCreateUser">Criar Usuário</button>
     </UserForm>
   </section>
@@ -10,6 +12,7 @@
 
 <script lang="ts">
 import UserForm from "@/components/UserForm.vue"
+import type { ErrorResponse } from "@/interfaces/Global"
 import { useGlobalStore } from "@/store"
 
 export default {
@@ -19,18 +22,22 @@ export default {
   },
   data() {
     return {
-      criar: false,
+      created: false,
+      errors: [] as string[],
     }
   },
   methods: {
     async submitCreateUser() {
+      this.errors = []
       try {
         const context = useGlobalStore()
         await context.createUser(context.user)
+        await context.loginUser(context.user.email, context.user.senha)
         await context.fetchUser()
         this.$router.push("/usuario")
-      } catch (error) {
-        console.error(error)
+      } catch (e) {
+        const error = e as ErrorResponse
+        this.errors.push(error?.response?.data?.message || "Erro ao created usuário")
       }
     },
   },

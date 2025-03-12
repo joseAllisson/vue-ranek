@@ -8,22 +8,25 @@
       <label for="password">Senha</label>
       <input type="password" name="password" id="password" v-model="login.password" />
 
+      <ErrorNotification :errors="errors" />
+
       <button class="btn" @click.prevent="submit">Logar</button>
     </form>
     <p class="forgot">
       <a href="/" target="_blank">Perdeu a senha? Clique aqui.</a>
     </p>
-    <LoginCriar />
+    <CreateLogin />
   </section>
 </template>
 
 <script lang="ts">
-import createLogin from "@/components/createLogin.vue"
+import CreateLogin from "@/components/CreateLogin.vue"
+import type { ErrorResponse } from "@/interfaces/Global"
 import { useGlobalStore } from "@/store"
 
 export default {
   components: {
-    LoginCriar: createLogin,
+    CreateLogin,
   },
   name: "LoginView",
   data() {
@@ -32,14 +35,21 @@ export default {
         email: "",
         password: "",
       },
+      errors: [] as string[],
     }
   },
   methods: {
     async submit() {
-      const context = useGlobalStore()
-      await context.loginUser(this.login.email, this.login.password)
-      await context.fetchUser()
-      this.$router.push("/usuario")
+      this.errors = []
+      try {
+        const context = useGlobalStore()
+        await context.loginUser(this.login.email, this.login.password)
+        await context.fetchUser()
+        this.$router.push("/usuario")
+      } catch (e) {
+        const error = e as ErrorResponse
+        this.errors.push(error?.response?.data?.message || "Erro ao logar")
+      }
     },
   },
 }

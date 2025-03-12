@@ -1,7 +1,7 @@
 <template>
   <form>
-    <input name="busca" id="busca" type="text" placeholder="Buscar..." v-model="busca">
-    <input type="submit" id="lupa" value="Buscar" @click.prevent="buscarProdutos">
+    <input name="search" id="search" type="text" placeholder="Buscar..." v-model="search" />
+    <input type="submit" id="lupa" value="Buscar" @click.prevent="buscarProdutos" />
   </form>
 </template>
 
@@ -9,15 +9,15 @@
 export default {
   data() {
     return {
-      busca: "",
-    };
+      search: "",
+    }
   },
   methods: {
     buscarProdutos() {
-      this.$router.push({ query: { q: this.busca } });
+      this.$router.push({ query: { q: this.search } })
     },
   },
-};
+}
 </script>
 <style scope>
 form {
@@ -26,7 +26,7 @@ form {
   position: relative;
 }
 
-#busca {
+#search {
   width: 100%;
   box-shadow: 0 4px 8px rgba(30, 60, 90, 0.1);
   padding: 20px;
@@ -35,8 +35,8 @@ form {
   transition: all 0.3s;
 }
 
-#busca:focus,
-#busca:hover {
+#search:focus,
+#search:hover {
   outline: none;
   transform: scale(1.1);
   box-shadow: 0 6px 12px rgba(30, 60, 90, 0.2);

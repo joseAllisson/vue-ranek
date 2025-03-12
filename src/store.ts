@@ -48,24 +48,15 @@ export const useGlobalStore = defineStore("global", {
 
     // Busca os produtos do usuário
     async fetchUserProducts() {
-      try {
-        const response = await api.get(`/produto?usuario_id=${this.user.id}`)
-        this.updateUserProducts(response.data)
-      } catch (error) {
-        console.error("Error fetching user products:", error)
-      }
+      const response = await api.get(`/produto?usuario_id=${this.user.id}`)
+      this.updateUserProducts(response.data)
     },
 
     // Busca os dados do usuário
     async fetchUser() {
-      try {
-        const response = await api.get("/usuario")
-        this.updateUser(response.data)
-        console.log("User fetched aqui:", response.data)
-        this.updateLogin(true)
-      } catch (error) {
-        console.error("Error fetching user:", error)
-      }
+      const response = await api.get("/usuario")
+      this.updateUser(response.data)
+      this.updateLogin(true)
     },
 
     // Criação de usuário
@@ -76,15 +67,11 @@ export const useGlobalStore = defineStore("global", {
 
     // Login do usuário
     async loginUser(email: string, password: string) {
-      try {
-        const response = await api.login({
-          username: email,
-          password: password,
-        })
-        window.localStorage.token = `${response.data.token}`
-      } catch (error) {
-        console.error("Error logging in:", error)
-      }
+      const response = await api.login({
+        username: email,
+        password: password,
+      })
+      window.localStorage.token = `${response.data.token}`
     },
 
     // Logout do usuário
