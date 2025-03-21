@@ -27,15 +27,20 @@ export default {
     }
   },
   methods: {
-    async submitCreateUser() {
+    async submitCreateUser(event: Event) {
       this.errors = []
+      const button = event.currentTarget as HTMLButtonElement
       try {
+        button.value = "Criando..."
+        button.setAttribute("disabled", "")
         const context = useGlobalStore()
         await context.createUser(context.user)
         await context.loginUser(context.user.email, context.user.senha)
         await context.fetchUser()
         this.$router.push("/usuario")
       } catch (e) {
+        button.value = "Criar Usuário"
+        button.removeAttribute("disabled")
         const error = e as ErrorResponse
         this.errors.push(error?.response?.data?.message || "Erro ao created usuário")
       }

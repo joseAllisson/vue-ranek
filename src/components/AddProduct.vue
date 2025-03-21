@@ -61,17 +61,25 @@ export default defineComponent({
     }
 
     // Adicionar product
-    const addProduct = async () => {
+    const addProduct = async (event: Event) => {
       try {
         added.value = true
         const productFormated = formatProduct()
+        const button = event.currentTarget as HTMLButtonElement
 
+        button.value = "Adicionando..."
+        button.setAttribute("disabled", "")
         await api.post("/produto", productFormated)
         await context.fetchUserProducts()
+        button.value = "Adicionar Produto"
+        button.removeAttribute("disabled")
 
         // Limpa o formulário após adicionar
         product.value = { nome: "", preco: "", descricao: "", vendido: "false" }
         if (photos.value) photos.value.value = ""
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_e) {
+        window.alert("Erro ao adicionar produto")
       } finally {
         added.value = false
       }

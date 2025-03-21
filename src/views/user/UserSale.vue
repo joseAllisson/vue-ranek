@@ -17,6 +17,7 @@
         </div>
       </div>
     </div>
+    <LoadingPage v-else />
   </section>
 </template>
 

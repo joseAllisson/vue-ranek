@@ -84,6 +84,14 @@ export default {
   margin: 30px;
 }
 
+@media screen and (max-width: 600px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin: 10px;
+  }
+}
+
 .product {
   box-shadow: 0 4px 8px rgba(30, 60, 90, 0.1);
   padding: 10px;

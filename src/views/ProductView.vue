@@ -98,7 +98,7 @@ img {
   width: 200px;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   .product {
     grid-template-columns: 1fr;
   }

@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>Compras</h2>
-    <div v-if="orders.length">
+    <div v-if="orders?.length">
       <div class="products-wrapper" v-for="(order, index) in orders" :key="index">
         <ItemProduct v-if="order.produto" :product="order.produto">
           <p class="vender">
@@ -11,6 +11,7 @@
         </ItemProduct>
       </div>
     </div>
+    <LoadingPage v-else />
   </section>
 </template>
 

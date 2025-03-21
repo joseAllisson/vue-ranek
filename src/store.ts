@@ -50,6 +50,7 @@ export const useGlobalStore = defineStore("global", {
     async fetchUserProducts() {
       const response = await api.get(`/produto?usuario_id=${this.user.id}`)
       this.updateUserProducts(response.data)
+      return response
     },
 
     // Busca os dados do usuário
