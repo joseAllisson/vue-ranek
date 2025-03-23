@@ -32,6 +32,9 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      meta: {
+        title: "Login",
+      },
     },
     {
       path: "/usuario",
@@ -73,6 +76,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = (to.meta?.title as string) || "Ranek"
+  }
+
   if (to.matched.some((record) => record.meta.login)) {
     if (!window.localStorage.token) {
       next("/login")

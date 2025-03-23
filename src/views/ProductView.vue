@@ -48,6 +48,9 @@ export default {
     getProduct() {
       api.get(`/produto/${this.id}`).then((response) => {
         this.product = response.data
+        if (this.product) {
+          document.title = this.product.nome
+        }
       })
     },
   },

@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect, onMounted } from "vue"
+import { defineComponent, ref, watchEffect } from "vue"
 import { api } from "@/services"
 import { useGlobalStore } from "@/store"
 import ItemProduct from "@/components/ItemProduct.vue"
@@ -50,10 +50,6 @@ export default defineComponent({
       if (isLoggedIn) {
         getSales()
       }
-    })
-
-    onMounted(() => {
-      document.title = "Usuário | Vendas"
     })
 
     return {
