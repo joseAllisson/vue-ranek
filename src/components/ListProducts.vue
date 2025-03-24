@@ -22,7 +22,7 @@
 <script lang="ts">
 import { api } from "@/services"
 import { serialize } from "@/helpers/serialize.ts"
-import type { Produto } from "@/interfaces/Produto"
+import type { Product } from "@/interfaces/Product"
 import PaginateProducts from "@/components/PaginateProducts.vue"
 import { formattedPrice } from "@/helpers/formattedPrice"
 
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      products: null as Produto[] | null,
+      products: null as Product[] | null,
       perPage: 3,
       total: 0,
     }
@@ -108,8 +108,11 @@ export default {
 }
 
 .product img {
+  width: 100%;
+  height: 410px;
+  object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .title {

@@ -1,8 +1,8 @@
 <template>
   <section>
     <h2>Endereço de Envio</h2>
-    <ErrorNotification :errors="errors" />
     <UserForm>
+      <ErrorNotification :errors="errors" />
       <button class="btn" @click.prevent="completePurchase">Finalizar Compra</button>
     </UserForm>
   </section>
@@ -27,10 +27,10 @@ export default defineComponent({
     const errors = ref<string[]>([])
 
     const purchase = {
-      buyer_id: globalStore.user.email,
-      seller_id: props.product.usuario_id,
-      product: props.product,
-      address: {
+      comprador_id: globalStore.user.email,
+      vendedor_id: props.product.usuario_id,
+      produto: props.product,
+      endereco: {
         cep: globalStore.user.cep,
         rua: globalStore.user.rua,
         numero: globalStore.user.numero,
@@ -41,8 +41,13 @@ export default defineComponent({
     }
 
     const createTransaction = async () => {
-      await api.post("/transacao", purchase)
-      router.push({ name: "compras" })
+      try {
+        await api.post("/transacao", purchase)
+        router.push({ name: "compras" })
+      } catch (e) {
+        const error = e as ErrorResponse
+        errors.value.push(error?.response?.data?.message || "Erro ao criar a transação")
+      }
     }
 
     const createUser = async () => {

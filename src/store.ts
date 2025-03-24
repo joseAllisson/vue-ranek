@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { api } from "@/services"
-import type { Produto } from "./interfaces/Produto"
+import type { Product } from "./interfaces/Product"
 import type { User } from "./interfaces/User"
 
 export const useGlobalStore = defineStore("global", {
@@ -18,7 +18,7 @@ export const useGlobalStore = defineStore("global", {
       cidade: "",
       estado: "",
     },
-    userProducts: null as Produto[] | null, // Para armazenar os produtos do usuário
+    userProducts: null as Product[] | null, // Para armazenar os produtos do usuário
   }),
 
   actions: {
@@ -33,12 +33,12 @@ export const useGlobalStore = defineStore("global", {
     },
 
     // Atualiza os produtos do usuário
-    updateUserProducts(products: Produto[]) {
+    updateUserProducts(products: Product[]) {
       this.userProducts = products
     },
 
     // Adiciona um novo produto no início da lista
-    addUserProduct(product: Produto) {
+    addUserProduct(product: Product) {
       if (this.userProducts) {
         this.userProducts.unshift(product)
       } else {

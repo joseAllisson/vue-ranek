@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import type { Produto } from "@/interfaces/Produto"
+import type { Product } from "@/interfaces/Product"
 import { formattedPrice } from "@/helpers/formattedPrice"
 import { api } from "@/services"
 import FinishBuy from "@/components/FinishBuy.vue"
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      product: null as Produto | null,
+      product: null as Product | null,
       finish: false,
     }
   },

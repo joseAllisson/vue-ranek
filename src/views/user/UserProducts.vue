@@ -47,7 +47,6 @@ export default defineComponent({
 
     // Computed para acessar os produtos do usuário
     const userProducts = computed(() => context.userProducts)
-    console.log(userProducts)
 
     const deleteProduct = async (id: number) => {
       const confirm = window.confirm("Deseja remover este produto?")

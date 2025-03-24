@@ -6,22 +6,24 @@
       <!-- </div> -->
     </router-link>
     <div class="info">
-      <p class="preco">{{ formattedPrice(product.preco) }}</p>
-      <h2 class="titulo">{{ product.nome }}</h2>
+      <div class="product-info">
+        <h2 class="titulo">{{ product.nome }}</h2>
+        <p class="preco">{{ formattedPrice(product.preco) }}</p>
+      </div>
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { type Produto } from "@/interfaces/Produto"
+import { type Product } from "@/interfaces/Product"
 import { defineComponent } from "vue"
 import { formattedPrice } from "@/helpers/formattedPrice"
 
 export default defineComponent({
   props: {
     product: {
-      type: Object as () => Produto,
+      type: Object as () => Product,
       required: true,
     },
   },
@@ -48,7 +50,15 @@ export default defineComponent({
 }
 
 .info {
-  align-self: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .product-img {
